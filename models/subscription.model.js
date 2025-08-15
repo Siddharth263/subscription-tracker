@@ -73,7 +73,7 @@ subscriptionSchema.pre('save', function (next) {
         }
 
         this.renewalDate = new Date(this.startDate);
-        this.renewalDate.setDate(this.renewlaDate.getDate() + renewalPeriods[this.frequency]);
+        this.renewalDate.setDate(this.renewalDate.getDate() + renewalPeriods[this.frequency]);
     }
 
 // auto update status based on renewal date
@@ -83,3 +83,7 @@ subscriptionSchema.pre('save', function (next) {
 
     next();
 })
+
+const Subscription = mongoose.model('Subscription', subscriptionSchema);
+
+export default Subscription;
