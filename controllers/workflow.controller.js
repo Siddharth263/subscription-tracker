@@ -6,6 +6,7 @@ const {serve} = require('@upstash/workflow/express')
 
 const Reminders = [7, 5, 2, 1];
 
+
 export const sendReminders = serve(async (context) => {
     const { subscriptionId } = context.requestPayload
     const subscription = await fetchSubscription(context, subscriptionId);
@@ -15,14 +16,14 @@ export const sendReminders = serve(async (context) => {
     const renewalDate = dayjs(subscription.renewalDate);
 
     if(renewalDate.isBefore(dayjs())) {
-        console.log(`Renewal date has passed for this subscriptio with id: ${subscriptionId}. Stopping Workflow`);
+        console.log(`Renewal date has passed for this subscription with id: ${subscriptionId}. Stopping Workflow`);
         return;
     }
 
     for(const daysBefore of Reminders) {
         const reminderDate = renewalDate.subtract(daysBefore, "days");
         if(reminderDate.isAfter(dayjs())) {
-            await  sleepUntilReminders(context, `Reminder ${daysBefore} days before ${reminderDate}`);
+            await  sleepUntilReminders(context, `Reminder ${daysBefore} days before ${reminderDate}`, reminderDate);
         }
         await triggerReminder(context, `Reminder ${daysBefore} days before`);
     }

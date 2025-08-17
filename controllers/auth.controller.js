@@ -3,6 +3,7 @@ import User from "../models/user.model.js";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import {JWT_EXPIRES_IN, JWT_SECRET} from "../config/env.js";
+import redis from "../config/redis.js";
 
 export const signUp = async (req, res, next) => {
     // signup logic comes here
@@ -31,7 +32,7 @@ export const signUp = async (req, res, next) => {
         const jwtToken = jwt.sign({userID: newUsers[0]._id}, JWT_SECRET, {expiresIn: JWT_EXPIRES_IN} );
 
         await session.commitTransaction();
-        session.endSession();
+        await session.endSession();
 
         res.status(201).send({
             success: true,
@@ -85,5 +86,33 @@ export const signIn = async (req, res, next) => {
 }
 
 export const signOut = async (req, res, next) => {
-    // sign out logic comes here
+    try {
+        let token;
+        if(req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+            token = req.headers.authorization.split(' ')[1];
+        }
+
+        if(!token) return res.status(401).json({message: 'Unauthorized'});
+
+        const decoded = jwt.decode(token);
+        if(!decoded) {
+            return res.status(500).json({message: 'invalid token'});
+        }
+
+        const exp = decoded.exp;
+        const ttl = exp - Math.floor(Date.now() / 1000);
+
+        if(ttl > 0) {
+            await redis.set(token, "blacklisted", 'ex', ttl);
+        }
+
+        res.status(200).json({
+            success: true,
+            message: 'Logged out successfully, token blacklisted',
+        })
+
+
+    } catch (error) {
+        next(error)
+    }
 }

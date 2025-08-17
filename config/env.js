@@ -9,6 +9,8 @@ export const {
     NODE_ENV,
     DB_URI,
     JWT_EXPIRES_IN,
+    REDIS_HOST,
+    REDIS_PORT,
     JWT_SECRET,
     ARCJET_KEY,
     SERVER_URL,
