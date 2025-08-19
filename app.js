@@ -16,9 +16,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(arcjetMiddleware);
 
-app.use("/api/v1/users", userRouter);
-app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/subscriptions", subscriptionRoutes);
+app.use("/api/v1/auth", authRouter); // all working completely
+app.use("/api/v1/users", userRouter); // all working completely
+app.use("/api/v1/subscriptions", subscriptionRoutes); // all working completely
 app.use("/api/v1/workflows", workflowRoutes);
 
 app.use(errorMiddleware);

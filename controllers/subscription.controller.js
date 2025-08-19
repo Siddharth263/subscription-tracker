@@ -1,6 +1,7 @@
 import Subscription from "../models/subscription.model.js";
 import {workflowClient} from "../config/upstash.js";
 import {SERVER_URL} from "../config/env.js";
+import dayjs from "dayjs";
 // import {sendReminders} from "./workflow.controller.js";
 
 export const createSubscription = async (req, res, next) =>{
@@ -32,14 +33,7 @@ export const createSubscription = async (req, res, next) =>{
 
 export const getUserSubscription = async (req, res, next) =>{
     try {
-        if(req.user.id !== req.params.id){
-            const error = new Error("you are not authorised");
-            error.status = 401;
-            throw error;
-        }
-
-        const subscriptions = await Subscription.find({user: req.params.id})
-
+        const subscriptions = await Subscription.find({user: req.params.userId});
         res.status(200).json({success: true, data: subscriptions});
 
     } catch(error) {
@@ -161,6 +155,29 @@ export const cancelSubscription = async (req, res, next) =>{
         })
 
     } catch(error) {
+        next(error);
+    }
+}
+
+export const upcomingSubscription = async (req, res, next) =>{
+    try{
+        const subscriptions = await Subscription.find({
+            user: req.params.userId,
+            renewalDate: { $gt: dayjs()},
+            status: "active"
+        });
+
+        if(subscriptions.length === 0) return res.status(200).json({
+            success: false,
+            message: "you don't have any active subscription",
+        })
+
+        return res.status(200).json({
+            success: true,
+            data: subscriptions,
+        })
+
+    } catch (error) {
         next(error);
     }
 }
