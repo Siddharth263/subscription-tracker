@@ -11,7 +11,7 @@ const subscriptionSchema = new mongoose.Schema({
     price: {
         type: Number,
         required: [true, 'subscription price is required'],
-        min:[0, 'pirce must be greater than 0'],
+        min:[0, 'price must be greater than 0'],
     },
     currency: {
         type: String,
@@ -20,7 +20,7 @@ const subscriptionSchema = new mongoose.Schema({
     },
     frequency: {
         type: String,
-        enum: ['daily','weekly', 'monthly', 'yearly'],
+        enum: ['Daily','Weekly', 'Monthly', 'Yearly'],
     },
     category: {
         type: String,

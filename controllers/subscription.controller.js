@@ -2,7 +2,6 @@ import Subscription from "../models/subscription.model.js";
 import {workflowClient} from "../config/upstash.js";
 import {SERVER_URL} from "../config/env.js";
 import dayjs from "dayjs";
-// import {sendReminders} from "./workflow.controller.js";
 
 export const createSubscription = async (req, res, next) =>{
     try {
