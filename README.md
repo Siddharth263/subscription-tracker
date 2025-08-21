@@ -41,52 +41,57 @@ Next.js (Frontend) → Express.js (Backend API) → MongoDB (Database)
                                   ↓
                              Arcjet (Security)
 ```
+
 ---
 
 ## Quick Start
 git clone https://github.com/yourusername/your-repo.git
+
 cd your-repo
+
 npm install
+
 npm run dev
+
 npm run build && npm start
 
 ---
 
-##Environment Variables
-# Server
+## Environment Variables
+### Server
 PORT=8080
 NODE_ENV=development
 CLIENT_ORIGIN=http://localhost:3000
 
-# MongoDB
+### MongoDB
 MONGO_URI=your_mongo_connection
 
-# Redis (Upstash)
+### Redis (Upstash)
 REDIS_URL=your_redis_url
 
-# JWT
+### JWT
 JWT_ACCESS_SECRET=your_access_secret
 JWT_REFRESH_SECRET=your_refresh_secret
 JWT_EXPIRES_IN=15m
 JWT_REFRESH_EXPIRES_IN=7d
 
-# Email
+### Email
 EMAIL_HOST=smtp.gmail.com
 EMAIL_PORT=587
 EMAIL_USER=your_email
 EMAIL_PASS=your_password
 EMAIL_FROM="CloudIt <no-reply@yourdomain.com>"
 
-# Arcjet
+### Arcjet
 ARCJET_KEY=your_arcjet_key
 
-# Upstash Workflows
+### Upstash Workflows
 UPSTASH_WORKFLOW_REST_URL=https://<region>.workflows.upstash.io
 UPSTASH_WORKFLOW_REST_TOKEN=xxxx
 
 ---
 
-## 📦 Deployment
+# 📦 Deployment
 
 - Hosted on **Hostinger VPS** with Node.js & Nginx.  
 - Ensure **SSL (HTTPS)** setup for production security.  
